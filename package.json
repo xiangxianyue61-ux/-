@@ -1,0 +1,31 @@
+{
+  "name": "team-project-backend",
+  "version": "1.0.0",
+  "description": "团队项目后端",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "node scripts/verifyBrowserUtils.js",
+    "test:login": "node scripts/loginTest.js",
+    "verify:browser": "node scripts/verifyBrowserUtils.js",
+    "init-rbac": "node scripts/initializeRBAC.js",
+    "upload-server": "node fileUploadServer.js",
+    "upload-server:dev": "nodemon fileUploadServer.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.0.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "jest": "^30.2.0",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^2.0.22",
+    "puppeteer": "^21.1.1"
+  }
+}
