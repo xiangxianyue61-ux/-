@@ -76,6 +76,59 @@ router.post('/', async (req, res) => {
   }
 });
 
+// 用户登录（根据账号、密码和部门）
+router.post('/login', async (req, res) => {
+  if (!isDbConnected) {
+    return res.status(503).json({
+      success: false,
+      message: '数据库未连接，请稍后再试'
+    });
+  }
+
+  try {
+    const { username, password, department } = req.body;
+
+    if (!username || !password || !department) {
+      return res.status(400).json({
+        success: false,
+        message: '请填写账号、密码和部门'
+      });
+    }
+
+    const user = await User.findOne({ username, password, department });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: '账号、密码或部门不正确'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: '登录成功',
+      data: {
+        id: user._id,
+        avatar: user.avatar,
+        username: user.username,
+        realName: user.realName,
+        contact: user.contact,
+        idNumber: user.idNumber,
+        address: user.address,
+        department: user.department,
+        position: user.position,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: '登录失败',
+      error: error.message
+    });
+  }
+});
+
 // 获取用户列表
 router.get('/', async (req, res) => {
   if (!isDbConnected) {

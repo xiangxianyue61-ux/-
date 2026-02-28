@@ -8,7 +8,7 @@ const User = require('./models/User');
 
 // 创建Express应用
 const app = express();
-// 从环境变量获取端口，默认使用8001端口以避免冲突
+// 从环境变量获取端口，默认使用 3000 端口
 const port = process.env.PORT || 3000;
 
 // 中间件
@@ -38,13 +38,13 @@ app.use((req, res, next) => {
 let dbConnected = false;
 const mongoUri = process.env.MONGODB_URI;
 
-
-
 if (mongoUri) {
   mongoose.connect(mongoUri)
     .then(async () => {
       dbConnected = true;
       console.log('✅ 已成功连接到 Atlas 数据库');
+      // 通知用户路由数据库已连接
+      setDbConnected(() => true);
       
       // 检查连接状态
       const db = mongoose.connection;
@@ -68,8 +68,8 @@ const TestSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 const TestModel = mongoose.model('Test', TestSchema);
-// 引入用户路由
-const { router: usersRouter } = require('./routes/users');
+// 引入用户路由，并注入数据库连接状态
+const { router: usersRouter, setDbConnected } = require('./routes/users');
 // 测试路由 - 创建测试数据（需要认证）
 app.get('/test', async (req, res) => {
   if (!dbConnected) {
@@ -347,8 +347,8 @@ function setupCollectionRoutes(collectionName) {
   });
 }
 
-// 为所有MongoDB集合设置路由
-const collections = ['zxx', 'zzy','zxxx'];
+// 为所有MongoDB集合设置路由（包含 users，方便直接获取用户数据）
+const collections = ['zxx', 'zzy', 'zxxx', 'users'];
 collections.forEach(collection => setupCollectionRoutes(collection));
 
 // 错误处理中间件
