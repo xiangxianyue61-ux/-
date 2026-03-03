@@ -348,7 +348,20 @@ function setupCollectionRoutes(collectionName) {
 }
 
 // 为所有MongoDB集合设置路由（包含 users，方便直接获取用户数据）
-const collections = ['zxx', 'zzy', 'zxxx', 'users'];
+// 这里额外开放 elders / suggestions 集合，供家属端“我的老人”和“投诉建议”模块使用
+// 同时开放健康档案相关集合：healthRecords / admissionRecords / dischargeRecords / examReports
+const collections = [
+  'zxx',
+  'zzy',
+  'zxxx',
+  'users',
+  'elders',
+  'suggestions',
+  'healthRecords',
+  'admissionRecords',
+  'dischargeRecords',
+  'examReports'
+];
 collections.forEach(collection => setupCollectionRoutes(collection));
 
 // 错误处理中间件
